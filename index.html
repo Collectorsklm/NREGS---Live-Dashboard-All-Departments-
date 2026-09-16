@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NREGS Material Works — Srikakulam District</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0C1026;
+  --panel:#161B3D;
+  --panel2:#1E2450;
+  --line:rgba(255,255,255,.10);
+  --text:#EAECF7;
+  --muted:#9AA2CC;
+  --online:#22D3EE;
+  --ground:#FFB020;
+  --good:#34D399;
+  --warn:#FFB020;
+  --bad:#FF5A5F;
+  --pink:#F43F8E;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:
+    radial-gradient(1100px 600px at 12% -10%, #2A1F63 0%, transparent 60%),
+    radial-gradient(900px 500px at 95% 0%, #0E3D57 0%, transparent 55%),
+    var(--ink);
+  color:var(--text);
+  font-family:Archivo, "Segoe UI", system-ui, sans-serif;
+  font-size:16px;
+  line-height:1.45;
+  -webkit-font-smoothing:antialiased;
+  padding:0 0 64px;
+}
+.wrap{max-width:1240px;margin:0 auto;padding:0 20px}
+
+/* header */
+header{padding:26px 0 18px;display:flex;flex-wrap:wrap;gap:16px;align-items:flex-end;justify-content:space-between}
+h1{font-size:clamp(22px,3.2vw,34px);font-weight:900;letter-spacing:-.02em;margin:0;line-height:1.1}
+h1 span{display:block;font-size:.5em;font-weight:600;color:var(--muted);letter-spacing:.01em;margin-top:6px}
+.status{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--good);box-shadow:0 0 0 0 rgba(52,211,153,.7);animation:pulse 2.4s infinite}
+@keyframes pulse{70%{box-shadow:0 0 0 12px rgba(52,211,153,0)}100%{box-shadow:0 0 0 0 rgba(52,211,153,0)}}
+.stamp{color:var(--muted);font-size:14px;font-variant-numeric:tabular-nums}
+button.refresh{
+  background:linear-gradient(135deg,#F43F8E,#8B5CF6);border:0;color:#fff;font-family:inherit;
+  font-weight:700;font-size:14px;padding:10px 18px;border-radius:999px;cursor:pointer
+}
+button.refresh:focus-visible,summary:focus-visible,input:focus-visible,.chip:focus-visible{outline:2px solid var(--online);outline-offset:2px}
+
+/* hero */
+.hero{
+  margin-top:8px;border-radius:26px;padding:30px;
+  background:linear-gradient(140deg,rgba(34,211,238,.16),rgba(244,63,142,.14) 55%,rgba(255,176,32,.14));
+  border:1px solid var(--line);
+  display:grid;grid-template-columns:1fr auto 1fr;gap:26px;align-items:center
+}
+.hero h2{grid-column:1/-1;margin:0 0 4px;font-size:15px;font-weight:600;color:var(--muted)}
+.side{text-align:left}
+.side .n{font-size:clamp(44px,8vw,78px);font-weight:900;letter-spacing:-.04em;line-height:.95;font-variant-numeric:tabular-nums}
+.side .l{font-size:14px;color:var(--muted);margin-top:8px}
+.side.o .n{color:var(--online)}
+.side.g .n{color:var(--ground)}
+.side.g{text-align:right}
+.vs{
+  text-align:center;padding:14px 18px;border-radius:18px;background:rgba(12,16,38,.55);border:1px solid var(--line);min-width:150px
+}
+.vs .n{font-size:clamp(28px,5vw,46px);font-weight:900;color:var(--bad);font-variant-numeric:tabular-nums;line-height:1}
+.vs .l{font-size:12px;color:var(--muted);margin-top:6px}
+
+/* kpi */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(178px,1fr));gap:14px;margin-top:18px}
+.kpi{border-radius:18px;padding:18px;background:var(--panel);border:1px solid var(--line);position:relative;overflow:hidden}
+.kpi:before{content:"";position:absolute;inset:0 auto 0 0;width:4px;background:var(--c,var(--online))}
+.kpi .n{font-size:clamp(26px,4vw,36px);font-weight:900;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.kpi .l{font-size:13px;color:var(--muted);margin-top:4px}
+
+/* sections */
+section{margin-top:34px}
+.head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.head h3{margin:0;font-size:20px;font-weight:800;letter-spacing:-.01em}
+.head p{margin:0;color:var(--muted);font-size:14px}
+
+/* dept rows */
+.dept{border:1px solid var(--line);border-radius:18px;background:var(--panel);padding:16px 18px;margin-bottom:10px}
+.dept.flag{border-color:rgba(255,90,95,.55);box-shadow:0 0 34px -12px rgba(255,90,95,.75)}
+.dept .top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.dept .name{font-weight:800;font-size:17px}
+.dept .pct{font-weight:900;font-size:22px;font-variant-numeric:tabular-nums}
+.bar{height:11px;border-radius:999px;background:rgba(255,255,255,.08);margin:12px 0 10px;overflow:hidden}
+.bar i{display:block;height:100%;border-radius:999px;width:0;transition:width .9s cubic-bezier(.2,.8,.2,1)}
+.mini{display:flex;flex-wrap:wrap;gap:18px;color:var(--muted);font-size:13.5px}
+.mini b{color:var(--text);font-weight:700;font-variant-numeric:tabular-nums}
+
+/* charts */
+.card{border:1px solid var(--line);border-radius:20px;background:var(--panel);padding:20px}
+.grid2{display:grid;grid-template-columns:1.55fr 1fr;gap:16px}
+svg{display:block;width:100%;height:auto;overflow:visible}
+.legend{display:flex;gap:18px;flex-wrap:wrap;color:var(--muted);font-size:13px;margin-top:10px}
+.legend i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:7px;vertical-align:-1px}
+
+/* pendency */
+.pend{border-radius:20px;padding:20px;border:1px solid rgba(255,90,95,.35);background:linear-gradient(145deg,rgba(255,90,95,.14),rgba(244,63,142,.08))}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:14px}
+.pcell{background:rgba(12,16,38,.5);border:1px solid var(--line);border-radius:14px;padding:14px}
+.pcell .d{font-weight:700;margin-bottom:8px}
+.pcell .r{display:flex;justify-content:space-between;color:var(--muted);font-size:13px;padding:3px 0}
+.pcell .r b{color:var(--bad);font-weight:800;font-variant-numeric:tabular-nums}
+
+/* table */
+.tools{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+input[type=search]{
+  background:var(--panel2);border:1px solid var(--line);color:var(--text);font-family:inherit;font-size:14px;
+  padding:10px 14px;border-radius:999px;min-width:210px
+}
+.chip{background:var(--panel2);border:1px solid var(--line);color:var(--muted);font-family:inherit;font-size:13px;
+  padding:7px 14px;border-radius:999px;cursor:pointer}
+.chip[aria-pressed=true]{background:var(--online);border-color:var(--online);color:#06202A;font-weight:700}
+.scroll{overflow-x:auto;border:1px solid var(--line);border-radius:18px}
+table{border-collapse:collapse;width:100%;min-width:900px;font-size:14px}
+th,td{padding:11px 14px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap}
+th{background:var(--panel2);color:var(--muted);font-weight:600;font-size:12.5px;position:sticky;top:0;cursor:pointer}
+td{font-variant-numeric:tabular-nums}
+td:first-child{font-weight:700}
+tbody tr:hover{background:rgba(255,255,255,.04)}
+.empty{padding:34px 18px;text-align:center;color:var(--muted)}
+.note{color:var(--muted);font-size:13px;margin-top:10px}
+.alert{border:1px solid rgba(255,176,32,.5);background:rgba(255,176,32,.10);border-radius:16px;padding:16px 18px;margin-top:18px;font-size:14.5px;display:none}
+.alert b{color:var(--warn)}
+@media (max-width:820px){
+  .hero{grid-template-columns:1fr;text-align:center;gap:16px;padding:22px}
+  .side,.side.g{text-align:center}
+  .grid2{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>NREGS Material Works &amp; Expenditure
+    <span>Srikakulam District — live department-wise position</span></h1>
+  <div class="status">
+    <span class="dot" aria-hidden="true"></span>
+    <span class="stamp" id="stamp">connecting…</span>
+    <button class="refresh" id="refresh">Refresh</button>
+  </div>
+</header>
+
+<div class="alert" id="alert"></div>
+
+<div class="hero">
+  <h2>Where the online position and the ground position disagree</h2>
+  <div class="side o"><div class="n" id="hOnline">0</div><div class="l">works completed as per online</div></div>
+  <div class="vs"><div class="n" id="hGap">0</div><div class="l">works of difference</div></div>
+  <div class="side g"><div class="n" id="hGround">0</div><div class="l">works completed on ground</div></div>
+</div>
+
+<div class="kpis" id="kpis"></div>
+
+<section>
+  <div class="head">
+    <h3>Department-wise performance</h3>
+    <p>Lowest completion first</p>
+  </div>
+  <div id="depts"></div>
+</section>
+
+<section>
+  <div class="grid2">
+    <div class="card">
+      <div class="head"><h3>Online vs ground, by department</h3></div>
+      <div id="barchart"></div>
+      <div class="legend">
+        <span><i style="background:var(--online)"></i>Completed online</span>
+        <span><i style="background:var(--ground)"></i>Completed on ground</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="head"><h3>District work status</h3></div>
+      <div id="donut"></div>
+      <div class="legend" id="donutLegend"></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="pend">
+    <div class="head">
+      <h3>Closure pendency — needs action</h3>
+      <p>Works finished or dead on file, but still open online</p>
+    </div>
+    <div class="pgrid" id="pend"></div>
+  </div>
+</section>
+
+<section>
+  <div class="head">
+    <h3>Mandal-wise entries</h3>
+    <p id="rowcount"></p>
+  </div>
+  <div class="tools">
+    <input type="search" id="search" placeholder="Search mandal or constituency">
+    <div id="chips" style="display:flex;gap:8px;flex-wrap:wrap"></div>
+  </div>
+  <div class="scroll">
+    <table>
+      <thead><tr id="thead"></tr></thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+  <p class="note">Reads the Google Sheet directly. Refreshes every 60 seconds.</p>
+</section>
+
+</div>
+
+<script>
+const SHEET_ID = "1q78n5oxHe-qnHNULu9r69-XNOx8dVl6BRRgdfausCl8";
+const DEPTS = ["PR","R & B","RWS","SSA","Irrigation","Vamsadhara","MCC Works (DWMA)","TW"];
+const DCOL = ["#22D3EE","#F43F8E","#34D399","#FFB020","#8B5CF6","#FB7185","#38BDF8","#A3E635"];
+
+/* ---------- csv ---------- */
+function parseCSV(text){
+  const rows=[]; let row=[], f="", q=false;
+  for(let i=0;i<text.length;i++){
+    const c=text[i];
+    if(q){
+      if(c==='"'){ if(text[i+1]==='"'){f+='"';i++;} else q=false; }
+      else f+=c;
+    } else {
+      if(c==='"') q=true;
+      else if(c===','){ row.push(f); f=""; }
+      else if(c==='\n'){ row.push(f); rows.push(row); row=[]; f=""; }
+      else if(c!=='\r') f+=c;
+    }
+  }
+  row.push(f); rows.push(row);
+  return rows;
+}
+const num = v => { const n=parseFloat(String(v==null?"":v).replace(/[, ]/g,"")); return isFinite(n)?n:0; };
+const fmt = n => n.toLocaleString("en-IN");
+
+/* ---------- state ---------- */
+let SUM=[], TOT=null, ROWS=[], filterDept="All", query="", sortCol=null, sortDir=1;
+const DHEAD=["Department","Sl No","Constituency","Mandal","Sanctioned No","Sanctioned Amt","Compl Online No","Compl Online Amt","Compl Ground No","Compl Ground Amt","InProg Online No","InProg Online Amt","InProg Ground No","InProg Ground Amt","Active No","Active Amt","NotStart Online No","NotStart Online Amt","NotStart Ground No","NotStart Ground Amt","NotClosed No","NotClosed Amt","ZeroExp No","ZeroExp Amt"];
+
+async function load(){
+  const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&t=${Date.now()}`;
+  try{
+    const res = await fetch(url);
+    if(!res.ok) throw new Error("HTTP "+res.status);
+    const rows = parseCSV(await res.text());
+    digest(rows);
+    document.getElementById("alert").style.display="none";
+    document.getElementById("stamp").textContent = "Updated " + new Date().toLocaleTimeString("en-IN",{hour12:false});
+    render();
+  }catch(e){
+    const a=document.getElementById("alert");
+    a.style.display="block";
+    a.innerHTML = "<b>Can't read the sheet.</b> Open the dashboard Google Sheet, choose Share, and set <b>Anyone with the link → Viewer</b>. This page reads the sheet from the browser, so it needs link access. ("+e.message+")";
+    document.getElementById("stamp").textContent = "not connected";
+  }
+}
+
+function digest(rows){
+  SUM=[]; TOT=null; ROWS=[];
+  rows.forEach(r=>{
+    const a=(r[0]||"").trim();
+    if(DEPTS.includes(a) && !SUM.some(d=>d.name===a) && r.length>12 && !isNaN(parseFloat(r[2]||""))===false){
+      // summary block: columns B..M are numeric
+    }
+  });
+  // summary rows: first occurrence of each department name where column C parses as a number
+  DEPTS.forEach(name=>{
+    const r = rows.find(x=>(x[0]||"").trim()===name && x.length>12 && String(x[2]||"").trim()!=="");
+    if(r) SUM.push({
+      name, rowsCount:num(r[1]), sanc:num(r[2]), amt:num(r[3]),
+      onl:num(r[4]), grd:num(r[5]), pct:num(r[6]),
+      prog:num(r[7]), notStart:num(r[8]), active:num(r[9]),
+      notClosed:num(r[10]), zeroExp:num(r[11]), gap:num(r[12])
+    });
+  });
+  const t = rows.find(x=>(x[0]||"").trim().toUpperCase().startsWith("TOTAL"));
+  if(t) TOT={ sanc:num(t[2]),amt:num(t[3]),onl:num(t[4]),grd:num(t[5]),pct:num(t[6]),
+              prog:num(t[7]),notStart:num(t[8]),active:num(t[9]),notClosed:num(t[10]),zeroExp:num(t[11]),gap:num(t[12]) };
+  const hi = rows.findIndex(x=>(x[0]||"").trim()==="Department" && (x[1]||"").trim()==="Sl No");
+  if(hi>-1){
+    for(let i=hi+1;i<rows.length;i++){
+      const r=rows[i];
+      if(!r) continue;
+      if(!DEPTS.includes((r[0]||"").trim())) continue;
+      if(r.slice(1,24).every(c=>String(c||"").trim()==="")) continue;
+      ROWS.push(r.slice(0,24));
+    }
+  }
+}
+
+/* ---------- count up ---------- */
+function countTo(el,to){
+  const from = parseFloat((el.dataset.v||"0")); el.dataset.v=to;
+  if(from===to){ el.textContent=fmt(to); return; }
+  const reduce = matchMedia("(prefers-reduced-motion:reduce)").matches;
+  if(reduce){ el.textContent=fmt(to); return; }
+  const t0=performance.now(), dur=700;
+  (function step(t){
+    const k=Math.min(1,(t-t0)/dur), e=1-Math.pow(1-k,3);
+    el.textContent = fmt(Math.round(from+(to-from)*e));
+    if(k<1) requestAnimationFrame(step);
+  })(performance.now());
+}
+
+/* ---------- render ---------- */
+function render(){
+  const T = TOT || {sanc:0,amt:0,onl:0,grd:0,prog:0,notStart:0,active:0,notClosed:0,zeroExp:0,gap:0};
+  countTo(document.getElementById("hOnline"),T.onl);
+  countTo(document.getElementById("hGround"),T.grd);
+  countTo(document.getElementById("hGap"),Math.abs(T.gap));
+
+  const kp=[
+    ["Sanctioned works",T.sanc,"var(--online)"],
+    ["Sanctioned amount",T.amt,"var(--pink)"],
+    ["In progress (online)",T.prog,"var(--warn)"],
+    ["Not started (online)",T.notStart,"var(--bad)"],
+    ["Within active works",T.active,"var(--good)"],
+    ["Closure pendency",T.notClosed+T.zeroExp,"#8B5CF6"]
+  ];
+  const kw=document.getElementById("kpis");
+  if(kw.children.length!==kp.length){
+    kw.innerHTML = kp.map(k=>`<div class="kpi" style="--c:${k[2]}"><div class="n">0</div><div class="l">${k[0]}</div></div>`).join("");
+  }
+  [...kw.children].forEach((el,i)=>countTo(el.querySelector(".n"),kp[i][1]));
+
+  const sorted=[...SUM].sort((a,b)=>a.pct-b.pct);
+  const flag=new Set(sorted.filter(d=>d.sanc>0).slice(0,3).map(d=>d.name));
+  document.getElementById("depts").innerHTML = sorted.map(d=>{
+    const col = d.pct>=75?"var(--good)":d.pct>=40?"var(--warn)":"var(--bad)";
+    return `<div class="dept ${flag.has(d.name)&&d.sanc>0?"flag":""}">
+      <div class="top"><div class="name">${d.name}</div><div class="pct" style="color:${col}">${d.sanc?d.pct+"%":"—"}</div></div>
+      <div class="bar"><i style="background:linear-gradient(90deg,${col},${col}99)" data-w="${Math.min(100,d.pct)}"></i></div>
+      <div class="mini">
+        <span>sanctioned <b>${fmt(d.sanc)}</b></span>
+        <span>online <b>${fmt(d.onl)}</b></span>
+        <span>ground <b>${fmt(d.grd)}</b></span>
+        <span>in progress <b>${fmt(d.prog)}</b></span>
+        <span>not started <b>${fmt(d.notStart)}</b></span>
+        <span>gap <b style="color:${d.gap?"var(--bad)":"inherit"}">${fmt(d.gap)}</b></span>
+      </div></div>`;
+  }).join("");
+  requestAnimationFrame(()=>document.querySelectorAll(".bar i").forEach(b=>b.style.width=b.dataset.w+"%"));
+
+  drawBars(); drawDonut(T);
+
+  document.getElementById("pend").innerHTML = SUM.map(d=>`
+    <div class="pcell"><div class="d">${d.name}</div>
+      <div class="r"><span>Completed, not closed online</span><b>${fmt(d.notClosed)}</b></div>
+      <div class="r"><span>Zero expenditure, not closed</span><b>${fmt(d.zeroExp)}</b></div>
+    </div>`).join("") || `<div class="empty">Nothing pending yet.</div>`;
+
+  const chips=document.getElementById("chips");
+  if(!chips.children.length){
+    chips.innerHTML = ["All",...DEPTS].map(d=>`<button class="chip" aria-pressed="${d==="All"}">${d}</button>`).join("");
+    chips.addEventListener("click",e=>{
+      const b=e.target.closest(".chip"); if(!b) return;
+      filterDept=b.textContent;
+      [...chips.children].forEach(c=>c.setAttribute("aria-pressed",c===b));
+      drawTable();
+    });
+  }
+  const th=document.getElementById("thead");
+  if(!th.children.length){
+    th.innerHTML = DHEAD.map((h,i)=>`<th data-i="${i}">${h}</th>`).join("");
+    th.addEventListener("click",e=>{
+      const t=e.target.closest("th"); if(!t) return;
+      const i=+t.dataset.i; sortDir = sortCol===i ? -sortDir : 1; sortCol=i; drawTable();
+    });
+  }
+  drawTable();
+}
+
+function drawTable(){
+  let r = ROWS.filter(x=>filterDept==="All" || (x[0]||"").trim()===filterDept);
+  if(query) r = r.filter(x=>x.join(" ").toLowerCase().includes(query));
+  if(sortCol!=null) r=[...r].sort((a,b)=>{
+    const A=a[sortCol]||"", B=b[sortCol]||"";
+    const na=parseFloat(String(A).replace(/,/g,"")), nb=parseFloat(String(B).replace(/,/g,""));
+    if(isFinite(na)&&isFinite(nb)) return (na-nb)*sortDir;
+    return String(A).localeCompare(String(B))*sortDir;
+  });
+  document.getElementById("rowcount").textContent = r.length ? r.length+" entries" : "";
+  document.getElementById("tbody").innerHTML = r.length
+    ? r.map(x=>`<tr>${DHEAD.map((_,i)=>`<td>${(x[i]||"").trim()||"—"}</td>`).join("")}</tr>`).join("")
+    : `<tr><td colspan="24"><div class="empty">No mandal entries yet. Rows appear here as departments fill their sheets.</div></td></tr>`;
+}
+
+function drawBars(){
+  const d=SUM.filter(x=>x.sanc>0 || x.onl>0 || x.grd>0);
+  const host=document.getElementById("barchart");
+  if(!d.length){ host.innerHTML=`<div class="empty">Chart fills once departments enter works.</div>`; return; }
+  const W=680,H=300,P={t:14,r:10,b:52,l:44};
+  const max=Math.max(1,...d.map(x=>Math.max(x.onl,x.grd)));
+  const bw=(W-P.l-P.r)/d.length, gw=bw*.34;
+  let g="";
+  for(let i=0;i<=4;i++){
+    const y=P.t+(H-P.t-P.b)*i/4, v=Math.round(max*(1-i/4));
+    g+=`<line x1="${P.l}" x2="${W-P.r}" y1="${y}" y2="${y}" stroke="rgba(255,255,255,.09)"/>
+        <text x="${P.l-8}" y="${y+4}" fill="#9AA2CC" font-size="11" text-anchor="end">${v}</text>`;
+  }
+  d.forEach((x,i)=>{
+    const x0=P.l+i*bw+bw/2, base=H-P.b, hh=H-P.t-P.b;
+    const h1=(x.onl/max)*hh, h2=(x.grd/max)*hh;
+    g+=`<rect x="${x0-gw-2}" y="${base-h1}" width="${gw}" height="${h1}" rx="4" fill="#22D3EE"/>
+        <rect x="${x0+2}" y="${base-h2}" width="${gw}" height="${h2}" rx="4" fill="#FFB020"/>
+        <text x="${x0}" y="${base+18}" fill="#9AA2CC" font-size="11" text-anchor="middle">${x.name.length>9?x.name.slice(0,8)+"…":x.name}</text>`;
+  });
+  host.innerHTML=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Completed online versus ground by department">${g}</svg>`;
+}
+
+function drawDonut(T){
+  const parts=[["Completed",T.onl,"#34D399"],["In progress",T.prog,"#FFB020"],["Not started",T.notStart,"#FF5A5F"]];
+  const total=parts.reduce((s,p)=>s+p[1],0);
+  const host=document.getElementById("donut");
+  if(!total){ host.innerHTML=`<div class="empty">Status split appears once works are entered.</div>`;
+    document.getElementById("donutLegend").innerHTML=""; return; }
+  const R=86,r=54,C=120; let a=-Math.PI/2,g="";
+  parts.forEach(p=>{
+    if(!p[1]) return;
+    const b=a+(p[1]/total)*Math.PI*2, big=(b-a)>Math.PI?1:0;
+    const pt=(rad,ang)=>[C+rad*Math.cos(ang),C+rad*Math.sin(ang)];
+    const [x1,y1]=pt(R,a),[x2,y2]=pt(R,b),[x3,y3]=pt(r,b),[x4,y4]=pt(r,a);
+    g+=`<path d="M${x1} ${y1} A${R} ${R} 0 ${big} 1 ${x2} ${y2} L${x3} ${y3} A${r} ${r} 0 ${big} 0 ${x4} ${y4} Z" fill="${p[2]}"/>`;
+    a=b;
+  });
+  g+=`<text x="${C}" y="${C-2}" text-anchor="middle" fill="#EAECF7" font-size="30" font-weight="900">${fmt(total)}</text>
+      <text x="${C}" y="${C+20}" text-anchor="middle" fill="#9AA2CC" font-size="12">works accounted</text>`;
+  host.innerHTML=`<svg viewBox="0 0 240 240" role="img" aria-label="District work status split">${g}</svg>`;
+  document.getElementById("donutLegend").innerHTML = parts.map(p=>`<span><i style="background:${p[2]}"></i>${p[0]} ${fmt(p[1])}</span>`).join("");
+}
+
+document.getElementById("search").addEventListener("input",e=>{query=e.target.value.toLowerCase().trim();drawTable();});
+document.getElementById("refresh").addEventListener("click",load);
+load();
+setInterval(load,60000);
+</script>
+</body>
+</html>
