@@ -46,6 +46,13 @@ h1 span{display:block;font-size:.5em;font-weight:600;color:var(--muted);letter-s
 .dot{width:9px;height:9px;border-radius:50%;background:var(--good);box-shadow:0 0 0 0 rgba(52,211,153,.7);animation:pulse 2.4s infinite}
 @keyframes pulse{70%{box-shadow:0 0 0 12px rgba(52,211,153,0)}100%{box-shadow:0 0 0 0 rgba(52,211,153,0)}}
 .stamp{color:var(--muted);font-size:14px;font-variant-numeric:tabular-nums}
+.counts{display:flex;gap:8px;flex-wrap:wrap}
+.pill{display:flex;align-items:center;gap:7px;background:var(--panel);border:1px solid var(--line);
+  border-radius:999px;padding:7px 14px;font-size:13px;color:var(--muted)}
+.pill b{color:var(--text);font-weight:800;font-variant-numeric:tabular-nums;font-size:15px}
+.pill.live b{color:var(--good)}
+.pill .d{width:7px;height:7px;border-radius:50%;background:var(--good);animation:pulse 2.4s infinite}
+.counts[hidden]{display:none}
 button.refresh{
   background:linear-gradient(135deg,#F43F8E,#8B5CF6);border:0;color:#fff;font-family:inherit;
   font-weight:700;font-size:14px;padding:10px 18px;border-radius:999px;cursor:pointer
@@ -146,6 +153,10 @@ tbody tr:hover{background:rgba(255,255,255,.04)}
   <h1>NREGS Material Works &amp; Expenditure
     <span>Srikakulam District — live department-wise position</span></h1>
   <div class="status">
+    <div class="counts" id="counts" hidden>
+      <span class="pill live"><span class="d" aria-hidden="true"></span>viewing now <b id="cActive">0</b></span>
+      <span class="pill">visits so far <b id="cTotal">0</b></span>
+    </div>
     <span class="dot" aria-hidden="true"></span>
     <span class="stamp" id="stamp">connecting…</span>
     <button class="refresh" id="refresh">Refresh</button>
@@ -243,7 +254,15 @@ function parseCSV(text){
   return rows;
 }
 const num = v => { const n=parseFloat(String(v==null?"":v).replace(/[, ]/g,"")); return isFinite(n)?n:0; };
-const fmt = n => n.toLocaleString("en-IN");
+const fmt = n => Math.round(Number(n)||0).toLocaleString("en-IN");
+/* departments enter amounts in LAKHS */
+const inr = n => "₹"+n.toLocaleString("en-IN",{maximumFractionDigits:2});
+function fmtAmt(lakh){
+  const v = Number(lakh)||0;
+  if(!v) return "₹0";
+  return Math.abs(v)>=100 ? inr(+(v/100).toFixed(2))+" Cr" : inr(+v.toFixed(2))+" L";
+}
+const AMT_COLS = new Set([5,7,9,11,13,15,17,19,21,23]);
 
 /* ---------- state ---------- */
 let SUM=[], TOT=null, ROWS=[], filterDept="All", query="", sortCol=null, sortDir=1;
@@ -301,15 +320,16 @@ function digest(rows){
 }
 
 /* ---------- count up ---------- */
-function countTo(el,to){
+function countTo(el,to,f){
+  f = f || fmt;
   const from = parseFloat((el.dataset.v||"0")); el.dataset.v=to;
-  if(from===to){ el.textContent=fmt(to); return; }
+  if(from===to){ el.textContent=f(to); return; }
   const reduce = matchMedia("(prefers-reduced-motion:reduce)").matches;
-  if(reduce){ el.textContent=fmt(to); return; }
+  if(reduce){ el.textContent=f(to); return; }
   const t0=performance.now(), dur=700;
   (function step(t){
     const k=Math.min(1,(t-t0)/dur), e=1-Math.pow(1-k,3);
-    el.textContent = fmt(Math.round(from+(to-from)*e));
+    el.textContent = f(from+(to-from)*e);
     if(k<1) requestAnimationFrame(step);
   })(performance.now());
 }
@@ -323,7 +343,7 @@ function render(){
 
   const kp=[
     ["Sanctioned works",T.sanc,"var(--online)"],
-    ["Sanctioned amount",T.amt,"var(--pink)"],
+    ["Sanctioned amount",T.amt,"var(--pink)",fmtAmt],
     ["In progress (online)",T.prog,"var(--warn)"],
     ["Not started (online)",T.notStart,"var(--bad)"],
     ["Within active works",T.active,"var(--good)"],
@@ -333,7 +353,7 @@ function render(){
   if(kw.children.length!==kp.length){
     kw.innerHTML = kp.map(k=>`<div class="kpi" style="--c:${k[2]}"><div class="n">0</div><div class="l">${k[0]}</div></div>`).join("");
   }
-  [...kw.children].forEach((el,i)=>countTo(el.querySelector(".n"),kp[i][1]));
+  [...kw.children].forEach((el,i)=>countTo(el.querySelector(".n"),kp[i][1],kp[i][3]));
 
   const sorted=[...SUM].sort((a,b)=>a.pct-b.pct);
   const flag=new Set(sorted.filter(d=>d.sanc>0).slice(0,3).map(d=>d.name));
@@ -344,6 +364,7 @@ function render(){
       <div class="bar"><i style="background:linear-gradient(90deg,${col},${col}99)" data-w="${Math.min(100,d.pct)}"></i></div>
       <div class="mini">
         <span>sanctioned <b>${fmt(d.sanc)}</b></span>
+        <span>amount <b>${fmtAmt(d.amt)}</b></span>
         <span>online <b>${fmt(d.onl)}</b></span>
         <span>ground <b>${fmt(d.grd)}</b></span>
         <span>in progress <b>${fmt(d.prog)}</b></span>
@@ -393,7 +414,11 @@ function drawTable(){
   });
   document.getElementById("rowcount").textContent = r.length ? r.length+" entries" : "";
   document.getElementById("tbody").innerHTML = r.length
-    ? r.map(x=>`<tr>${DHEAD.map((_,i)=>`<td>${(x[i]||"").trim()||"—"}</td>`).join("")}</tr>`).join("")
+    ? r.map(x=>`<tr>${DHEAD.map((_,i)=>{
+        const raw=(x[i]||"").trim();
+        if(!raw) return "<td>—</td>";
+        return `<td>${AMT_COLS.has(i)?fmtAmt(num(raw)):raw}</td>`;
+      }).join("")}</tr>`).join("")
     : `<tr><td colspan="24"><div class="empty">No mandal entries yet. Rows appear here as departments fill their sheets.</div></td></tr>`;
 }
 
@@ -440,6 +465,27 @@ function drawDonut(T){
   host.innerHTML=`<svg viewBox="0 0 240 240" role="img" aria-label="District work status split">${g}</svg>`;
   document.getElementById("donutLegend").innerHTML = parts.map(p=>`<span><i style="background:${p[2]}"></i>${p[0]} ${fmt(p[1])}</span>`).join("");
 }
+
+/* ---------- visitor counter ---------- */
+const COUNTER_URL = "PASTE_YOUR_WEB_APP_URL_HERE";
+function visitorId(){
+  let id = sessionStorage.getItem("vid");
+  if(!id){ id = Math.random().toString(36).slice(2)+Date.now().toString(36); sessionStorage.setItem("vid",id); }
+  return id;
+}
+async function ping(first){
+  if(!COUNTER_URL.startsWith("http")) return;
+  try{
+    const r = await fetch(`${COUNTER_URL}?id=${visitorId()}&new=${first?1:0}&t=${Date.now()}`);
+    const d = await r.json();
+    document.getElementById("counts").hidden = false;
+    countTo(document.getElementById("cActive"), d.active||0);
+    countTo(document.getElementById("cTotal"), d.total||0);
+  }catch(e){ /* counter is optional — dashboard works without it */ }
+}
+ping(!sessionStorage.getItem("counted"));
+sessionStorage.setItem("counted","1");
+setInterval(()=>ping(false),30000);
 
 document.getElementById("search").addEventListener("input",e=>{query=e.target.value.toLowerCase().trim();drawTable();});
 document.getElementById("refresh").addEventListener("click",load);
